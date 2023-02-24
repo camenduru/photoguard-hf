@@ -1,6 +1,6 @@
 ---
 title: Photoguard
-emoji: 👁
+emoji: 🛡
 colorFrom: gray
 colorTo: green
 sdk: gradio
