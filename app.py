@@ -23,6 +23,7 @@ pipe_inpaint = pipe_inpaint.to("cuda")
 ## Good params for editing that we used all over the paper --> decent quality and speed   
 GUIDANCE_SCALE = 7.5
 NUM_INFERENCE_STEPS = 100
+DEFAULT_SEED = 1234
 
 def pgd(X, targets, model, criterion, eps=0.1, step_size=0.015, iters=40, clamp_min=0, clamp_max=1, mask=None):
     X_adv = X.clone().detach() + (torch.rand(*X.shape)*2*eps-eps).cuda()
@@ -80,7 +81,10 @@ def immunize_fn(init_image, mask_image):
         return adv_image        
 
 def run(image, prompt, seed, immunize=False):
-    seed = int(seed)
+    if seed == '':
+        seed = DEFAULT_SEED
+    else:
+        seed = int(seed)
     torch.manual_seed(seed)
 
     init_image = Image.fromarray(image['image'])
@@ -111,9 +115,9 @@ def run(image, prompt, seed, immunize=False):
 
 demo = gr.Interface(fn=run, 
                     inputs=[
-                        gr.ImageMask(label='Input Image'),
+                        gr.ImageMask(label='Input Image (Use drawing tool to mask the regions you want to keep, e.g. faces)'),
                         gr.Textbox(label='Prompt', placeholder='A photo of a man in a wedding'),
-                        gr.Textbox(label='Seed', placeholder='1234'),
+                        gr.Textbox(label='Seed (Change to get different edits!)', placeholder=str(DEFAULT_SEED), visible=True),
                         gr.Checkbox(label='Immunize', value=False),
                     ], 
                     cache_examples=False,
@@ -133,7 +137,7 @@ demo = gr.Interface(fn=run,
                     description='''<u>Official</u> demo of our paper: <br>
                     **Raising the Cost of Malicious AI-Powered Image Editing** <br>
                     *Hadi Salman\*, Alaa Khaddaj\*, Guillaume Leclerc\*, Andrew Ilyas, Aleksander Madry* <br>
-                    [Paper](https://arxiv.org/abs/2302.06588) 
+                    MIT &nbsp;&nbsp;[Paper](https://arxiv.org/abs/2302.06588) 
                     &nbsp;&nbsp;[Blog post](https://gradientscience.org/photoguard/) 
                     &nbsp;&nbsp;[![](https://badgen.net/badge/icon/GitHub?icon=github&label)](https://github.com/MadryLab/photoguard)
                     <br />
@@ -142,7 +146,7 @@ demo = gr.Interface(fn=run,
                     <br />
                     **Demo steps:**
  + Upload an image (or select from the below examples!)
- + Mask the parts of the image you want to maintain unedited (e.g., faces of people)
+ + Mask (with the drawing tool) the parts of the image you want to maintain unedited (e.g., faces of people)
  + Add a prompt to edit the image accordingly (see examples below)
  + Play with the seed and click submit until you get a realistic edit that you are happy with (we have good seeds for you below)
  
