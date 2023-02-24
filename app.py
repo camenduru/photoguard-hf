@@ -113,8 +113,8 @@ demo = gr.Interface(fn=run,
                     inputs=[
                         gr.ImageMask(label='Input Image'),
                         gr.Textbox(label='Prompt', placeholder='A photo of a man in a wedding'),
-                        gr.Textbox(label='Seed', placeholder='1234', visible=True),
-                        gr.Checkbox(label='Immunize'),
+                        gr.Textbox(label='Seed', placeholder='1234'),
+                        gr.Checkbox(label='Immunize', value=False),
                     ], 
                     outputs=[gr.Gallery(
                             label="Generated images", 
