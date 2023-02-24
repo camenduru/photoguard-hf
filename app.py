@@ -85,7 +85,7 @@ def run(image, prompt, seed, immunize=False):
 
     init_image = Image.fromarray(image['image'])
     init_image = resize_and_crop(init_image, (512,512))
-    mask_image = ImageOps.invert(Image.fromarray(image['mask']).convert('RGB')).resize(init_image.size)
+    mask_image = ImageOps.invert(Image.fromarray(image['mask']).convert('RGB'))
     mask_image = resize_and_crop(mask_image, init_image.size)
     
     if immunize:
@@ -116,6 +116,7 @@ demo = gr.Interface(fn=run,
                         gr.Textbox(label='Seed', placeholder='1234'),
                         gr.Checkbox(label='Immunize', value=False),
                     ], 
+                    cache_examples=False,
                     outputs=[gr.Gallery(
                             label="Generated images", 
                             show_label=False, 
@@ -154,4 +155,4 @@ demo = gr.Interface(fn=run,
                    )
 
 demo.launch()
-# demo.launch(server_name='0.0.0.0', share=False, server_port=7860, inline=False, )
+# demo.launch(server_name='0.0.0.0', share=False, server_port=7860, inline=False)
