@@ -143,18 +143,19 @@ demo = gr.Interface(fn=run,
                     <br />
                     We present an approach to mitigating the risks of malicious image editing posed by large diffusion models. The key idea is to immunize images so as to make them resistant to manipulation by these models. This immunization relies on injection of imperceptible adversarial perturbations designed to disrupt the operation of the targeted diffusion models, forcing them to generate unrealistic images.
                     <br />
-                    <br />
-                    **Demo steps:**
- + Upload an image (or select from the below examples!)
- + Mask (with the drawing tool) the parts of the image you want to maintain unedited (e.g., faces of people)
- + Add a prompt to edit the image accordingly (see examples below)
- + Play with the seed and click submit until you get a realistic edit that you are happy with (we have good seeds for you below)
- 
- Now let's immunize your image and try again! 
- + Click on the "immunize" button, then submit.
- + You will get the immunized image (which looks identical to the original one) and the edited image, which is now hopefully unrealistic!                   
-                    <br />
-                    **This is a research project and is not production-ready.**
+**This is a research project and is not production-ready.**
+<details closed>
+<summary>Demo steps:</summary>
+
++ Upload an image (or select from the below examples!)
++ Mask (using the drawing tool) the parts of the image you want to maintain unedited (e.g., faces of people)
++ Add a prompt to edit the image accordingly (see examples below)
++ Play with the seed and click submit until you get a realistic edit that you are happy with (we have good seeds for you below)
+
+Now let's immunize your image and try again! 
++ Click on the "immunize" button, then submit.
++ You will get the immunized image (which looks identical to the original one) and the edited image, which is now hopefully unrealistic!                   
+</details>
                     ''',
                    )
 
