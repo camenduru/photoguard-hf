@@ -68,7 +68,7 @@ def immunize_fn(init_image, mask_image):
                     criterion=torch.nn.MSELoss(), 
                     clamp_min=-1, 
                     clamp_max=1,
-                    eps=0.1, 
+                    eps=0.12, 
                     step_size=0.01, 
                     iters=200,
                     mask=1-mask
@@ -115,7 +115,7 @@ def run(image, prompt, seed, immunize=False):
 
 demo = gr.Interface(fn=run, 
                     inputs=[
-                        gr.ImageMask(label='Input Image (Use drawing tool to mask the regions you want to keep, e.g. faces)'),
+                        gr.ImageMask(label='Drawing tool to mask regions you want to keep, e.g. faces'),
                         gr.Textbox(label='Prompt', placeholder='A photo of a man in a wedding'),
                         gr.Textbox(label='Seed (Change to get different edits!)', placeholder=str(DEFAULT_SEED), visible=True),
                         gr.Checkbox(label='Immunize', value=False),
@@ -128,29 +128,28 @@ demo = gr.Interface(fn=run,
                     examples=[
                     ['./images/hadi_and_trevor.jpg', 'man attending a wedding', '329357'],
                     ['./images/trevor_2.jpg', 'two men in prison', '329357'],
-                    ['./images/trevor_3.jpg', 'man in a private jet', '329357'],
                     ['./images/elon_2.jpg', 'man in a metro station', '214213'],
                     ],
                     examples_per_page=20,
                     allow_flagging='never',
-                    title="Immunize your photos against manipulation by Stable Diffusion",
+                    title="Interactive Demo: Immunize your Photos Against AI-powered Malicious Manipulation",
                     description='''<u>Official</u> demo of our paper: <br>
                     **Raising the Cost of Malicious AI-Powered Image Editing** <br>
-                    *Hadi Salman\*, Alaa Khaddaj\*, Guillaume Leclerc\*, Andrew Ilyas, Aleksander Madry* <br>
+                    *[Hadi Salman](https://twitter.com/hadisalmanX)\*, [Alaa Khaddaj](https://twitter.com/Alaa_Khaddaj)\*, [Guillaume Leclerc](https://twitter.com/gpoleclerc)\*, [Andrew Ilyas](https://twitter.com/andrew_ilyas), [Aleksander Madry](https://twitter.com/aleks_madry)* <br>
                     MIT &nbsp;&nbsp;[Paper](https://arxiv.org/abs/2302.06588) 
                     &nbsp;&nbsp;[Blog post](https://gradientscience.org/photoguard/) 
                     &nbsp;&nbsp;[![](https://badgen.net/badge/icon/GitHub?icon=github&label)](https://github.com/MadryLab/photoguard)
                     <br />
-                    We present an approach to mitigating the risks of malicious image editing posed by large diffusion models. The key idea is to immunize images so as to make them resistant to manipulation by these models. This immunization relies on injection of imperceptible adversarial perturbations designed to disrupt the operation of the targeted diffusion models, forcing them to generate unrealistic images.
+                    Below you can test our (encoder attack) immunization method for making images resistant to manipulation by Stable Diffusion. This immunization process forces the model to perform unrealistic edits.
                     <br />
-**This is a research project and is not production-ready.**
+**This is a research project and is not production-ready. See Section 5 in our paper for discussion on its limitations.**
 <details closed>
-<summary>Demo steps:</summary>
+<summary>Click for demo steps:</summary>
 
 + Upload an image (or select from the below examples!)
 + Mask (using the drawing tool) the parts of the image you want to maintain unedited (e.g., faces of people)
 + Add a prompt to edit the image accordingly (see examples below)
-+ Play with the seed and click submit until you get a realistic edit that you are happy with (we have good seeds for you below)
++ Play with the seed and click submit until you get a realistic edit that you are happy with (or use default seeds below)
 
 Now let's immunize your image and try again! 
 + Click on the "immunize" button, then submit.
@@ -159,5 +158,5 @@ Now let's immunize your image and try again!
                     ''',
                    )
 
-demo.launch()
-# demo.launch(server_name='0.0.0.0', share=False, server_port=7860, inline=False)
+# demo.launch()
+demo.launch(server_name='0.0.0.0', share=False, server_port=7860, inline=False)
