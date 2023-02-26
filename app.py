@@ -152,7 +152,7 @@ with gr.Blocks() as demo:
         gr.HTML('''
             <center>
             <iframe width="920" height="600" src="https://www.youtube.com/embed/aTC59Q6ZDNM">
-            allowfullscreen="allowfullscreen" frameborder="0">
+            allow="fullscreen;" frameborder="0">
             </iframe>
             </center>
         '''
@@ -172,9 +172,17 @@ with gr.Blocks() as demo:
             genimages = gr.Gallery(label="Generated images", 
                        show_label=False, 
                        elem_id="gallery").style(grid=[1,2], height="auto")
+            duplicate = gr.HTML("""
+                <p>For faster inference without waiting in queue, you may duplicate the space and upgrade to GPU in settings.
+                <br/>
+                <a href="https://huggingface.co/spaces/hadisalman/photoguard?duplicate=true">
+                <img style="margin-top: 0em; margin-bottom: 0em" src="https://bit.ly/3gLdBN6" alt="Duplicate Space"></a>
+                <p/>
+            """)
+            
     b1.click(run, [imgmask, prompt, seed, scale, num_steps, immunize], [genimages])
     examples = gr.Examples(examples=examples_list,inputs = [imgmask, prompt, seed, scale, num_steps, immunize],  outputs=[genimages], cache_examples=False, fn=run)
 
 
 demo.launch()
-# demo.launch(server_name='0.0.0.0', share=True, server_port=7860, inline=False)
+# demo.launch(server_name='0.0.0.0', share=False, server_port=7860, inline=False)
