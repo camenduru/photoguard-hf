@@ -138,12 +138,13 @@ with gr.Blocks() as demo:
     gr.Markdown(description)
     with gr.Accordion(label='How to use (step by step):', open=False):
         gr.Markdown('''
+            *First, let's edit your image:*        
             + Upload an image (or select from the examples below)
             + Use the brush to mask the parts of the image you want to keep unedited (e.g., faces of people)
             + Add a prompt to guide the edit (see examples below)
             + Play with the seed and click submit until you get a realistic edit that you are happy with (we provided good example seeds for you below)
 
-            *Now let's immunize your image and try again:*
+            *Now, let's immunize your image and try again:*
             + Click on the "Immunize" button, then submit.
             + You will get an immunized version of the image (which should look essentially identical to the original one) as well as its edited version (which should now look rather unrealistic)
         ''')
