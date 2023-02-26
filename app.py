@@ -110,7 +110,7 @@ def run(image, prompt, seed, guidance_scale, num_inference_steps, immunize=False
     if immunize:
         return [(immunized_image, 'Immunized Image'), (image_edited, 'Edited After Immunization')]
     else:
-        return [(image_edited, 'Edited Image')]
+        return [(image_edited, 'Edited Image (Without Immunization)')]
 
 
 description='''<u>Official</u> demo of our paper: <br>
