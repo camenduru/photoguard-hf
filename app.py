@@ -80,7 +80,7 @@ def immunize_fn(init_image, mask_image):
         adv_image = recover_image(adv_image, init_image, mask_image, background=True)
         return adv_image        
 
-def run(image, prompt, seed, immunize=False):
+def run(image, prompt, seed, guidance_scale, num_inference_steps, immunize=False):
     if seed == '':
         seed = DEFAULT_SEED
     else:
@@ -101,8 +101,8 @@ def run(image, prompt, seed, immunize=False):
                          height = init_image.size[0],
                          width = init_image.size[1],
                          eta=1,
-                         guidance_scale=GUIDANCE_SCALE,
-                         num_inference_steps=NUM_INFERENCE_STEPS,
+                         guidance_scale=guidance_scale,
+                         num_inference_steps=num_inference_steps,
                         ).images[0]
         
     image_edited = recover_image(image_edited, init_image, mask_image)
@@ -113,50 +113,58 @@ def run(image, prompt, seed, immunize=False):
         return [(image_edited, 'Edited Image')]
 
 
-demo = gr.Interface(fn=run, 
-                    inputs=[
-                        gr.ImageMask(label='Drawing tool to mask regions you want to keep, e.g. faces'),
-                        gr.Textbox(label='Prompt', placeholder='A photo of a man in a wedding'),
-                        gr.Textbox(label='Seed (Change to get different edits!)', placeholder=str(DEFAULT_SEED), visible=True),
-                        gr.Checkbox(label='Immunize', value=False),
-                    ], 
-                    cache_examples=False,
-                    outputs=[gr.Gallery(
-                            label="Generated images", 
-                            show_label=False, 
-                            elem_id="gallery").style(grid=[1,2], height="auto")],
-                    examples=[
-                    ['./images/hadi_and_trevor.jpg', 'man attending a wedding', '329357'],
-                    ['./images/trevor_2.jpg', 'two men in prison', '329357'],
-                    ['./images/elon_2.jpg', 'man in a metro station', '214213'],
-                    ],
-                    examples_per_page=20,
-                    allow_flagging='never',
-                    title="Interactive Demo: Immunize your Photos Against AI-powered Malicious Manipulation",
-                    description='''<u>Official</u> demo of our paper: <br>
-                    **Raising the Cost of Malicious AI-Powered Image Editing** <br>
-                    *[Hadi Salman](https://twitter.com/hadisalmanX)\*, [Alaa Khaddaj](https://twitter.com/Alaa_Khaddaj)\*, [Guillaume Leclerc](https://twitter.com/gpoleclerc)\*, [Andrew Ilyas](https://twitter.com/andrew_ilyas), [Aleksander Madry](https://twitter.com/aleks_madry)* <br>
-                    MIT &nbsp;&nbsp;[Paper](https://arxiv.org/abs/2302.06588) 
-                    &nbsp;&nbsp;[Blog post](https://gradientscience.org/photoguard/) 
-                    &nbsp;&nbsp;[![](https://badgen.net/badge/icon/GitHub?icon=github&label)](https://github.com/MadryLab/photoguard)
-                    <br />
-                    Below you can test our (encoder attack) immunization method for making images resistant to manipulation by Stable Diffusion. This immunization process forces the model to perform unrealistic edits.
-                    <br />
-**This is a research project and is not production-ready. See Section 5 in our paper for discussion on its limitations.**
-<details closed>
-<summary>Click for demo steps:</summary>
+description='''<u>Official</u> demo of our paper: <br>
+**Raising the Cost of Malicious AI-Powered Image Editing** <br>
+*[Hadi Salman](https://twitter.com/hadisalmanX), [Alaa Khaddaj](https://twitter.com/Alaa_Khaddaj), [Guillaume Leclerc](https://twitter.com/gpoleclerc), [Andrew Ilyas](https://twitter.com/andrew_ilyas), [Aleksander Madry](https://twitter.com/aleks_madry)* <br>
+MIT &nbsp;&nbsp;[Paper](https://arxiv.org/abs/2302.06588) 
+&nbsp;&nbsp;[Blog post](https://gradientscience.org/photoguard/) 
+&nbsp;&nbsp;[![](https://badgen.net/badge/icon/GitHub?icon=github&label)](https://github.com/MadryLab/photoguard)
+<br />
+Below you can test our (encoder attack) immunization method for making images resistant to manipulation by Stable Diffusion. This immunization process forces the model to perform unrealistic edits. See Section 5 in our paper for a discussion of the intended use cases for this primitive.
+<br />
+'''
 
-+ Upload an image (or select from the below examples!)
-+ Mask (using the drawing tool) the parts of the image you want to maintain unedited (e.g., faces of people)
-+ Add a prompt to edit the image accordingly (see examples below)
-+ Play with the seed and click submit until you get a realistic edit that you are happy with (or use default seeds below)
+examples_list = [
+                    ['./images/hadi_and_trevor.jpg', 'man attending a wedding', '329357', 7.5, 100],
+                    ['./images/trevor_2.jpg', 'two men in prison', '329357', 7.5, 100],
+                    ['./images/elon_2.jpg', 'man in a metro station', '214213', 7.5, 100],
+                ]
 
-Now let's immunize your image and try again! 
-+ Click on the "immunize" button, then submit.
-+ You will get the immunized image (which looks identical to the original one) and the edited image, which is now hopefully unrealistic!                   
-</details>
-                    ''',
-                   )
 
-# demo.launch()
-demo.launch(server_name='0.0.0.0', share=False, server_port=7860, inline=False)
+with gr.Blocks() as demo:
+    gr.HTML(value="""<h1 style="font-weight: 900; margin-bottom: 7px; margin-top: 5px;">
+            Interactive Demo: Immunize your Photos Against AI-Powered Malicious Manipulation </h1><br>
+        """)
+    gr.Markdown(description)
+    with gr.Accordion(label='Click for demo steps:', open=False):
+        gr.Markdown('''
+            + Upload an image (or select from the examples below)
+            + Use the brush to mask the parts of the image you want to keep unedited (e.g., faces of people)
+            + Add a prompt to guide the edit (see examples below)
+            + Play with the seed and click submit until you get a realistic edit that you are happy with (we provided good example seeds for you below)
+
+            *Now let's immunize your image and try again:*
+            + Click on the "Immunize" button, then submit.
+            + You will get an immunized version of the image (which should look essentially identical to the original one) as well as its edited version (which should now look rather unrealistic)
+        ''')
+
+    with gr.Row():  
+        with gr.Column():
+            imgmask = gr.ImageMask(label='Drawing tool to mask regions you want to keep, e.g. faces')
+            prompt = gr.Textbox(label='Prompt', placeholder='A photo of a man in a wedding')
+            seed = gr.Textbox(label='Seed (Change to get different edits)', placeholder=str(DEFAULT_SEED), visible=True)
+            with gr.Accordion("Advanced Options", open=False):
+                scale = gr.Slider(label="Guidance Scale", minimum=0.1, maximum=25.0, value=GUIDANCE_SCALE, step=0.1)
+                num_steps = gr.Slider(label="Number of Inference Steps", minimum=10, maximum=250, value=NUM_INFERENCE_STEPS, step=5)
+            immunize = gr.Checkbox(label='Immunize', value=False)
+            b1 = gr.Button('Submit')
+        with gr.Column():
+            genimages = gr.Gallery(label="Generated images", 
+                       show_label=False, 
+                       elem_id="gallery").style(grid=[1,2], height="auto")
+    b1.click(run, [imgmask, prompt, seed, scale, num_steps, immunize], [genimages])
+    examples = gr.Examples(examples=examples_list,inputs = [imgmask, prompt, seed, scale, num_steps, immunize],  outputs=[genimages], cache_examples=False, fn=run)
+
+
+demo.launch()
+# demo.launch(server_name='0.0.0.0', share=False, server_port=7860, inline=False)
