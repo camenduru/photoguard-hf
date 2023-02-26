@@ -136,7 +136,7 @@ with gr.Blocks() as demo:
             Interactive Demo: Immunize your Photos Against AI-Powered Malicious Manipulation </h1><br>
         """)
     gr.Markdown(description)
-    with gr.Accordion(label='Click for demo steps:', open=False):
+    with gr.Accordion(label='How to use (step by step):', open=False):
         gr.Markdown('''
             + Upload an image (or select from the examples below)
             + Use the brush to mask the parts of the image you want to keep unedited (e.g., faces of people)
@@ -147,6 +147,16 @@ with gr.Blocks() as demo:
             + Click on the "Immunize" button, then submit.
             + You will get an immunized version of the image (which should look essentially identical to the original one) as well as its edited version (which should now look rather unrealistic)
         ''')
+
+    with gr.Accordion(label='Example (video):', open=False):
+        gr.HTML('''
+            <center>
+            <iframe width="920" height="600" src="https://www.youtube.com/embed/aTC59Q6ZDNM">
+            allowfullscreen="allowfullscreen" frameborder="0">
+            </iframe>
+            </center>
+        '''
+        )
 
     with gr.Row():  
         with gr.Column():
@@ -167,4 +177,4 @@ with gr.Blocks() as demo:
 
 
 demo.launch()
-# demo.launch(server_name='0.0.0.0', share=False, server_port=7860, inline=False)
+# demo.launch(server_name='0.0.0.0', share=True, server_port=7860, inline=False)
