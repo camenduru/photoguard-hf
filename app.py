@@ -125,9 +125,9 @@ Below you can test our (encoder attack) immunization method for making images re
 '''
 
 examples_list = [
-                    ['./images/hadi_and_trevor.jpg', 'man attending a wedding', '329357', 7.5, 100],
-                    ['./images/trevor_2.jpg', 'two men in prison', '329357', 7.5, 100],
-                    ['./images/elon_2.jpg', 'man in a metro station', '214213', 7.5, 100],
+                    ['./images/hadi_and_trevor.jpg', 'man attending a wedding', '329357', GUIDANCE_SCALE, NUM_INFERENCE_STEPS],
+                    ['./images/trevor_2.jpg', 'two men in prison', '329357', GUIDANCE_SCALE, NUM_INFERENCE_STEPS],
+                    ['./images/elon_2.jpg', 'man in a metro station', '214213', GUIDANCE_SCALE, NUM_INFERENCE_STEPS],
                 ]
 
 
