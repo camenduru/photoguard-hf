@@ -135,7 +135,7 @@ examples_list = [
 
 with gr.Blocks() as demo:
     gr.HTML(value="""<h1 style="font-weight: 900; margin-bottom: 7px; margin-top: 5px;">
-            Interactive Demo: Raising the Cost of Malicious AI-Powered Image Editing </h1><br>
+            Interactive Demo: Raising the Cost of Malicious AI-Powered Image Editing </h1>
         """)
     gr.Markdown(description)
     with gr.Accordion(label='How to use (step by step):', open=False):
@@ -165,7 +165,7 @@ with gr.Blocks() as demo:
         with gr.Column():
             imgmask = gr.ImageMask(label='Drawing tool to mask regions you want to keep, e.g. faces')
             prompt = gr.Textbox(label='Prompt', placeholder='A photo of a man in a wedding')
-            seed = gr.Textbox(label='Seed (Change to get different edits)', placeholder=str(DEFAULT_SEED), visible=True)
+            seed = gr.Textbox(label='Seed (change to get different edits)', placeholder=str(DEFAULT_SEED), visible=True)
             with gr.Accordion("Advanced options (to improve quality of edits)", open=False):
                 scale = gr.Slider(label="Guidance scale", minimum=0.1, maximum=25.0, value=GUIDANCE_SCALE, step=0.1)
                 num_steps = gr.Slider(label="Number of inference steps (higher better, but slower)", minimum=10, maximum=250, value=NUM_INFERENCE_STEPS, step=5)
