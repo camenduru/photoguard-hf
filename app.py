@@ -16,7 +16,6 @@ pipe_inpaint = StableDiffusionInpaintPipeline.from_pretrained(
     "runwayml/stable-diffusion-inpainting",
     revision="fp16",
     torch_dtype=torch.float16,
-    safety_checker=None,
 )
 pipe_inpaint = pipe_inpaint.to("cuda")
 
