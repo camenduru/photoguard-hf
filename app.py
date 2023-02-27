@@ -120,7 +120,9 @@ MIT &nbsp;&nbsp;[Paper](https://arxiv.org/abs/2302.06588)
 &nbsp;&nbsp;[Blog post](https://gradientscience.org/photoguard/) 
 &nbsp;&nbsp;[![](https://badgen.net/badge/icon/GitHub?icon=github&label)](https://github.com/MadryLab/photoguard)
 <br />
-Below you can test our (encoder attack) immunization method for making images resistant to manipulation by Stable Diffusion. This immunization process forces the model to perform unrealistic edits. See Section 5 in our paper for a discussion of the intended use cases for this primitive.
+Below you can test our (encoder attack) immunization method for making images resistant to manipulation by Stable Diffusion. This immunization process forces the model to perform unrealistic edits. 
+
+**See Section 5 in our paper for a discussion of the intended use cases for (as well as limitations of) this tool.**
 <br />
 '''
 
@@ -133,7 +135,7 @@ examples_list = [
 
 with gr.Blocks() as demo:
     gr.HTML(value="""<h1 style="font-weight: 900; margin-bottom: 7px; margin-top: 5px;">
-            Interactive Demo: Immunize your Photos Against AI-Powered Malicious Manipulation </h1><br>
+            Interactive Demo: Raising the Cost of Malicious AI-Powered Image Editing </h1><br>
         """)
     gr.Markdown(description)
     with gr.Accordion(label='How to use (step by step):', open=False):
