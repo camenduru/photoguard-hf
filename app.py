@@ -166,9 +166,9 @@ with gr.Blocks() as demo:
             imgmask = gr.ImageMask(label='Drawing tool to mask regions you want to keep, e.g. faces')
             prompt = gr.Textbox(label='Prompt', placeholder='A photo of a man in a wedding')
             seed = gr.Textbox(label='Seed (Change to get different edits)', placeholder=str(DEFAULT_SEED), visible=True)
-            with gr.Accordion("Advanced Options", open=False):
-                scale = gr.Slider(label="Guidance Scale", minimum=0.1, maximum=25.0, value=GUIDANCE_SCALE, step=0.1)
-                num_steps = gr.Slider(label="Number of Inference Steps", minimum=10, maximum=250, value=NUM_INFERENCE_STEPS, step=5)
+            with gr.Accordion("Advanced options (to improve quality of edits)", open=False):
+                scale = gr.Slider(label="Guidance scale", minimum=0.1, maximum=25.0, value=GUIDANCE_SCALE, step=0.1)
+                num_steps = gr.Slider(label="Number of inference steps (higher better, but slower)", minimum=10, maximum=250, value=NUM_INFERENCE_STEPS, step=5)
             immunize = gr.Checkbox(label='Immunize', value=False)
             b1 = gr.Button('Submit')
         with gr.Column():
@@ -176,8 +176,10 @@ with gr.Blocks() as demo:
                        show_label=False, 
                        elem_id="gallery").style(grid=[1,2], height="auto")
             duplicate = gr.HTML("""
-                <p>For faster inference without waiting in queue, you may duplicate the space and upgrade to GPU in settings.
+                <p>For faster inference without waiting in queue, run this demo locally (instruction in our Github repo), or duplicate this space and upgrade to GPU in settings.
                 <br/>
+                <a href="https://github.com/MadryLab/photoguard">
+                <img style="margin-top: 0em; margin-bottom: 0em" src="https://badgen.net/badge/icon/GitHub?icon=github&label"></a>
                 <a href="https://huggingface.co/spaces/hadisalman/photoguard?duplicate=true">
                 <img style="margin-top: 0em; margin-bottom: 0em" src="https://bit.ly/3gLdBN6" alt="Duplicate Space"></a>
                 <p/>
