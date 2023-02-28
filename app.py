@@ -112,7 +112,7 @@ def run(image, prompt, seed, guidance_scale, num_inference_steps, immunize=False
         return [(image_edited, 'Edited Image (Without Immunization)')]
 
 
-description='''<u>Official</u> demo of our paper: <br>
+description='''<u>Demo of our paper: <br>
 **Raising the Cost of Malicious AI-Powered Image Editing** <br>
 *[Hadi Salman](https://twitter.com/hadisalmanX), [Alaa Khaddaj](https://twitter.com/Alaa_Khaddaj), [Guillaume Leclerc](https://twitter.com/gpoleclerc), [Andrew Ilyas](https://twitter.com/andrew_ilyas), [Aleksander Madry](https://twitter.com/aleks_madry)* <br>
 MIT &nbsp;&nbsp;[Paper](https://arxiv.org/abs/2302.06588) 
